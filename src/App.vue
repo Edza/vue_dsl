@@ -16,6 +16,10 @@ import { Component, Vue } from 'vue-property-decorator'
 import Generator from './components/Generator.vue'
 import Reverser from './components/Reverser.vue'
 
+// not enabled
+// import VueHighlightJS from 'vue-highlightjs'
+// Vue.use(VueHighlightJS)
+
 export enum DisplayMode {
     Generator = 1,
     Reverser,
@@ -67,7 +71,7 @@ h2:hover {
 }
 textarea {
   display: inline-block;
-  width: 650px;
+  width: 700px;
   height: 800px;
 }
 .parser-error {

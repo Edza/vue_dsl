@@ -3,7 +3,7 @@ export default JSON.stringify({
   items: [
     {
       id: '1231',
-      about: 'Need to create DSL RULES as regexes.',
+      about: 'Jāizveido DSL likumi ar REGEXIEM',
       isConflicting: false,
       isTech: false,
       items: undefined,
@@ -13,16 +13,16 @@ export default JSON.stringify({
     },
     {
       id: '1232',
-      about: 'Need to create a DSL generator.',
+      about: 'Jāizveido DSL ģenerators',
       isConflicting: false,
       isTech: false,
       progress: 0,
-      responsible: 'Jānis',
+      responsible: 'Pēteris',
       assigned: ['Jānis', 'Liene'],
       items: [
         {
           id: '1233',
-          about: 'Need to create a forward generator.',
+          about: 'Jāizveido DSL atpakaļ ģenerātors',
           isConflicting: false,
           isTech: true,
           items: undefined,

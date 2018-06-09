@@ -20,8 +20,25 @@
 // izstrādes komandas locekļus
 
 const text = `
-<div>
-  <span>Some HTML here</span>
-</div>
+
+Es gribu, lai manā komandā ir 'Jānis'.
+Un protams arī komandā ir jābūt 'Pēteris'.
+Kā arī komandā ir 'Liene'.
+
+Jauna prasība '1231' 'Jāizveido DSL likumi ar REGEXIEM'.
+Parametri prasībai '1231' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '50'%.
+Komandā prasībai '1231' atbildīgais ir 'Jānis' un piešķirti ir '["Jānis", "Liene"]'.
+
+
+Jauna prasība '1232' 'Jāizveido DSL ģenerators'.
+Parametri prasībai '1232' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '0'%.
+Komandā prasībai '1232' atbildīgais ir 'Pēteris' un piešķirti ir '["Jānis", "Liene"]'.
+
+
+  Jauna prasība '1233' 'Jāizveido DSL atpakaļ ģenerātors'.
+  Parametri prasībai '1233' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '0'%.
+  Komandā prasībai '1233' atbildīgais ir 'Jānis' un piešķirti ir '["Jānis", "Liene"]'.
+  Prasība '1233' ir zem '1232'.
+
 `
 export default text

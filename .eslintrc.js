@@ -18,6 +18,7 @@ module.exports = {
       'imports': 'never',
       'exports': 'never',
       'functions': 'ignore'
-    }]
+    }],
+    'no-throw-literal': 0
   }
 }
