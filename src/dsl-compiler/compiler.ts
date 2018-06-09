@@ -1,3 +1,8 @@
+export interface CompilerResult {
+  text: string;
+  isErrorMsg: boolean;
+}
+
 class Compiler {
     greeting: string = '';
 
@@ -32,10 +37,7 @@ class Compiler {
     }
 }
 
-export interface CompilerResult {
-  text: string;
-  isErrorMsg: boolean;
-}
+// REGEX TO BE TESTED WITH THIS EXAMPLE
 
 // Es gribu, lai manā komandā ir 'Jānis'.
 // Un protams arī komandā ir jābūt 'Pēteris'.
@@ -53,6 +55,21 @@ export interface CompilerResult {
 //   Parametri prasībai '1233' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '0'%.
 //   Komandā prasībai '1233' atbildīgais ir 'Jānis' un piešķirti ir '["Jānis", "Liene"]'.
 //   Prasība '1233' ir zem '1232'.
+
+export interface PraMod {
+  members: string[],
+  items: PraModItem[]
+}
+
+export interface PraModItem {
+  id: number,
+  about: string,
+  isConflicting: boolean,
+  isText?: boolean,
+  progress: number,
+  responsible: string,
+  assigned: string[]
+}
 
 class RegexBuilder {
   // member name: string
@@ -78,12 +95,15 @@ class RegexBuilder {
     this.itemSetParentPattern,
   ];
 
-  BuildObject (text: string) {
+  BuildPraMod (text: string) {
+    const praMod: PraMod = {
+      members: [],
+      items: []
+    }
+
     // convention: team members always before items
     // items are all defined before the next item starts
-
     const lines = text.split('\r\n')
-    const processedLines = []
 
     for (let line of lines) {
       if (line.trim() === '') {
@@ -92,13 +112,19 @@ class RegexBuilder {
 
       for (let pattern of this.patterns) {
         if (pattern.test(line)) {
-          processedLines.push(pattern.exec(line))
+          this.AddStatementToModel(praMod, pattern, pattern.exec(line))
           break
         }
       }
 
       throw `no pattern matched the given line ${line}`
     }
+
+    return praMod
+  }
+
+  private AddStatementToModel (model: PraMod, rule: RegExp, values: RegExpExecArray | null) {
+
   }
 }
 
