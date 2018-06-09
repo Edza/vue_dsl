@@ -1,12 +1,12 @@
 <template>
 <div>
   <div class="left">
-    <h3>DSL</h3>
-    <textarea v-model="dslText" @keyup="displayCompile"></textarea>
+    <h3>GENERATED DSL</h3>
+    <textarea readonly v-model="backGenText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
   </div>
-  <div class="right">
-    <h3>GENERATED JAVASCRIPT</h3>
-    <textarea readonly v-model="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
+ <div class="left">
+    <h3>Javascript</h3>
+    <textarea v-model="jsText" @keyup="displayBackCompile"></textarea>
   </div>
 </div>
 </template>
@@ -16,26 +16,26 @@
 // some weird linter bug
 /* eslint space-infix-ops: "off" */
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import DslText from '@/assets/dsl-text-initial'
+import DslJsExample from '@/assets/dsl-js-example'
 import { Compiler, CompilerResult } from '@/dsl-compiler/compiler'
 
 type Translator = (input : string) => CompilerResult
 
 @Component
-export default class Generator extends Vue {
-  dslText = DslText.trim()
-  genText = ''
+export default class Reverser extends Vue {
+  jsText = DslJsExample.trim()
+  backGenText = ''
   isError = false
   compile : Translator = new Compiler().translate
 
-  displayCompile () {
-    const result : CompilerResult = this.compile(this.dslText)
-    this.genText = result.text
+  displayBackCompile () {
+    const result : CompilerResult = this.compile(this.jsText)
+    this.backGenText = result.text
     this.isError = result.isErrorMsg
   }
 
   mounted () {
-    this.displayCompile()
+    this.displayBackCompile()
   }
 }
 
