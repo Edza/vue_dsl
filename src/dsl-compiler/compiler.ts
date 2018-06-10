@@ -45,30 +45,36 @@ class Compiler {
 
 // Jauna prasība '1231' 'Jāizveido DSL likumi ar REGEXIEM'.
 // Parametri prasībai '1231' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '50'%.
-// Komandā prasībai '1231' atbildīgais ir 'Jānis' un piešķirti ir '["Jānis", "Liene"]'.
+// Komandā prasībai '1231' atbildīgais ir 'Jānis' un piešķirti ir 'Jānis, Liene'.
 
 // Jauna prasība '1232' 'Jāizveido DSL ģenerators'.
 // Parametri prasībai '1232' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '0'%.
-// Komandā prasībai '1232' atbildīgais ir 'Pēteris' un piešķirti ir '["Jānis", "Liene"]'.
+// Komandā prasībai '1232' atbildīgais ir 'Pēteris' un piešķirti ir 'Jānis, Liene'.
 
 //   Jauna prasība '1233' 'Jāizveido DSL atpakaļ ģenerātors'.
 //   Parametri prasībai '1233' ir tādi ka 'KONFLIKTU NAV', tā ir 'TEHNISKĀ', un progess ir '0'%.
-//   Komandā prasībai '1233' atbildīgais ir 'Jānis' un piešķirti ir '["Jānis", "Liene"]'.
+//   Komandā prasībai '1233' atbildīgais ir 'Jānis' un piešķirti ir 'Jānis, Liene'.
 //   Prasība '1233' ir zem '1232'.
+
+export class PraModItem {
+  id: number
+  about: string
+  isConflicting: boolean = false
+  isTechnical: boolean = false
+  progress: number = 0
+  responsible: string = ''
+  assigned: string[] = []
+  items: PraModItem[] = []
+
+  constructor (id: number, about: string) {
+    this.id = id
+    this.about = about
+  }
+}
 
 export interface PraMod {
   members: string[],
   items: PraModItem[]
-}
-
-export interface PraModItem {
-  id: number,
-  about: string,
-  isConflicting: boolean,
-  isText?: boolean,
-  progress: number,
-  responsible: string,
-  assigned: string[]
 }
 
 class RegexBuilder {
@@ -86,6 +92,12 @@ class RegexBuilder {
 
   // item id: number,  parent-item-id: number
   readonly itemSetParentPattern = /.*Jauna prasība[^']*'([^']*)'[^']*'([^']*)'/
+
+  // conditional constants
+  readonly noconflicts = 'KONFLIKTU NAV'
+  readonly conflicts = 'KONFLIKTU IR'
+  readonly technical = 'TEHNISKĀ'
+  readonly client = 'KLIENTA'
 
   readonly patterns : RegExp[] = [
     this.teamMemberPattern,
@@ -111,8 +123,9 @@ class RegexBuilder {
       }
 
       for (let pattern of this.patterns) {
-        if (pattern.test(line)) {
-          this.AddStatementToModel(praMod, pattern, pattern.exec(line))
+        const groups = pattern.exec(line)
+        if (groups != null) {
+          this.AddStatementToModel(praMod, pattern, groups)
           break
         }
       }
@@ -123,8 +136,71 @@ class RegexBuilder {
     return praMod
   }
 
-  private AddStatementToModel (model: PraMod, rule: RegExp, values: RegExpExecArray | null) {
+  private AddStatementToModel (model: PraMod, rule: RegExp, values: RegExpExecArray) {
+    if (rule === this.teamMemberPattern) {
+      // add a new team member
+      model.members.push(values[1])
+    }
 
+    if (rule === this.newItemPattern) {
+      // we are beginning to build a new item
+      model.items.push(new PraModItem(Number(values[1]), values[2]))
+    }
+
+    if (rule === this.itemParamsPattern) {
+      // set last updated parameters
+      const itemInProgress = model.items[model.items.length - 1]
+      itemInProgress.isConflicting = values[2] === this.noconflicts
+      itemInProgress.isTechnical = values[3] === this.technical
+      itemInProgress.progress = Number(values[4]) / 100
+    }
+
+    if (rule === this.itemTeamPattern) {
+      // set last updated team
+      const itemInProgress = model.items[model.items.length - 1]
+      itemInProgress.responsible = values[2]
+      itemInProgress.assigned = values[3].split(',').map(assigned => assigned.trim())
+    }
+
+    if (rule === this.itemSetParentPattern) {
+      // get last updated team
+      const itemInProgress = model.items[model.items.length - 1]
+
+      // to what do we assign?
+      const targetId = Number(values[2])
+
+      // remove last item from the tree as we will be assigning it someplace else
+      model.members.splice(model.items.length - 1, 1)
+
+      let isAssigned = false
+
+      for (let item of model.items) {
+        if (this.SetItemParentRecursive(item, targetId, itemInProgress)) {
+          isAssigned = true
+          break
+        }
+      }
+
+      if (!isAssigned) {
+        throw `Failed to set parent for item ${itemInProgress.id} to parent ${targetId}`
+      }
+    }
+  }
+
+  private SetItemParentRecursive (node: PraModItem, targetId: number, newChild: PraModItem) : boolean {
+    if (node.id === targetId) {
+      node.items.push(newChild)
+      return true
+    }
+
+    let result = false
+
+    for (const item of node.items) {
+      // if any child succeeds we all succeed
+      result = result || this.SetItemParentRecursive(item, targetId, newChild)
+    }
+
+    return result
   }
 }
 
