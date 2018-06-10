@@ -14,7 +14,7 @@ export class ModelBuilder {
     readonly itemTeamPattern = /.*Komandā prasībai[^']*'([^']*)'[^']*'([^']*)'[^']*'([^']*)'/
 
     // item id: number,  parent-item-id: number
-    readonly itemSetParentPattern = /.*Jauna prasība[^']*'([^']*)'[^']*'([^']*)'/
+    readonly itemSetParentPattern = /.*'([^']*)'[^']*ir zem[^']*'([^']*)'/
 
     // conditional constants
     readonly noconflicts = 'KONFLIKTU NAV'
@@ -79,7 +79,7 @@ export class ModelBuilder {
         case this.itemParamsPattern: {
           // set last updated parameters
           const itemInProgress = model.items[model.items.length - 1]
-          itemInProgress.isConflicting = values[2] === this.noconflicts
+          itemInProgress.isConflicting = values[2] === this.conflicts
           itemInProgress.isTechnical = values[3] === this.technical
           itemInProgress.progress = Number(values[4]) / 100
           break
@@ -96,6 +96,9 @@ export class ModelBuilder {
           this.AssignChildItemToParent(model, values)
           break
         }
+        default: {
+          throw 'parser rule is not defined!'
+        }
       }
     }
 
@@ -107,7 +110,7 @@ export class ModelBuilder {
       const targetId = Number(values[2])
 
       // remove last item from the tree as we will be assigning it someplace else
-      model.members.splice(model.items.length - 1, 1)
+      model.items.splice(model.items.length - 1, 1)
 
       let isAssigned = false
 
