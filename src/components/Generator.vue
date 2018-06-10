@@ -19,17 +19,15 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import DslText from '@/assets/dsl-text-initial'
 import { Compiler, CompilerResult } from '@/dsl-compiler/compiler'
 
-type Translator = (input : string) => CompilerResult
-
 @Component
 export default class Generator extends Vue {
   dslText = DslText.trim()
   genText = ''
   isError = false
-  compile : Translator = new Compiler().translate
+  compiler = new Compiler()
 
   displayCompile () {
-    const result : CompilerResult = this.compile(this.dslText)
+    const result : CompilerResult = this.compiler.translate(this.dslText)
     this.genText = result.text
     this.isError = result.isErrorMsg
   }
