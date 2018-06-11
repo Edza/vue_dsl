@@ -31,23 +31,6 @@ class Compiler {
 
       return result
     }
-
-    // TODO: refactor into tree viewer
-    translateBack (genText: string): CompilerResult {
-      // this.greeting = genText
-
-      const result: CompilerResult = {
-        text: 'Hello2, ',
-        isErrorMsg: genText.indexOf('!') !== -1,
-        model: this.builder.BuildPraMod('')
-      }
-
-      // if (result.isErrorMsg) {
-      //   result.text = 'error2' + result.text
-      // }
-
-      return result
-    }
 }
 
 export { Compiler }

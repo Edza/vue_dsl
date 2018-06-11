@@ -7,13 +7,14 @@ export class PraModItem {
     responsible: string = ''
     assigned: string[] = []
     children: PraModItem[] = []
+
     // for tree-view
     text = ''
     description = ''
     opened = true
     type = ''
 
-    public setParametersRecursive () {
+    public setTreeViewParametersRecursive () {
       this.text = `${this.id}: ${this.about} | PROGRESS: ${Math.round(this.progress * 100)}%`
 
       this.description = `${this.id}: ${this.about} | PROGRESS: ${Math.round(this.progress * 100)}%\r\n`
@@ -23,7 +24,7 @@ export class PraModItem {
       this.type = this.isTechnical ? 'Tech' : 'Client'
 
       for (let child of this.children) {
-        child.setParametersRecursive()
+        child.setTreeViewParametersRecursive()
       }
     }
 

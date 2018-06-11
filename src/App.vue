@@ -1,44 +1,20 @@
 <template>
   <div id="app">
-    <div v-if="view == Display.Generator">
-      <h2 @click="switchView(Display.Reverser)">PraMod GENERATOR. Switch to reverser</h2>
-      <Generator/>
-    </div>
-    <div v-if="view == Display.Reverser">
-      <h2 @click="switchView(Display.Generator)">PraMod REVERSER. Switch to generator</h2>
-      <Reverser/>
-    </div>
+    <h2>PraMod GENERATOR</h2>
+    <Generator/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Generator from './components/Generator.vue'
-import Reverser from './components/Reverser.vue'
-
-// not enabled
-// import VueHighlightJS from 'vue-highlightjs'
-// Vue.use(VueHighlightJS)
-
-export enum DisplayMode {
-    Generator = 1,
-    Reverser,
-}
 
 @Component({
   components: {
   Generator,
-  Reverser
   },
   })
-export default class App extends Vue {
-  Display = DisplayMode
-  view : DisplayMode = DisplayMode.Generator
-
-  switchView (displayMode : DisplayMode) {
-    this.view = displayMode
-  }
-}
+export default class App extends Vue {}
 </script>
 
 <style>
@@ -54,11 +30,6 @@ h1 {
 }
 h2 {
   display: inline;
-  text-decoration: underline;
-  color: lightblue;
-}
-h2:hover {
-  color: blue;
 }
 .left {
   float: left;

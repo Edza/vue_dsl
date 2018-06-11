@@ -7,12 +7,7 @@
   <div class="right">
     <h3>GENERATED JAVASCRIPT <span class="small-toggle" @click="toggleVisual">Toggle visual</span></h3>
     <textarea v-if="!showTree" readonly v-model="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
-    <!-- <vue-tree-list v-else @click="treeClick"
-                :model="treeData"
-                default-tree-node-name="Prasība"
-                default-leaf-node-name="Apakšprasība"></vue-tree-list> -->
-     <!-- <v-jstree v-else :data="treeData" show-checkbox multiple allow-batch whole-row @item-click="itemClick"></v-jstree> -->
-     <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
+    <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
   </div>
 </div>
 </template>
@@ -22,7 +17,6 @@
 // some weird linter bug
 /* eslint space-infix-ops: "off" */
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
 import VTreeview from 'v-treeview'
 
 import DslText from '@/assets/dsl-text-initial'
@@ -37,27 +31,13 @@ import TreeLoader from './helpers/tree-loader'
 export default class Generator extends Vue {
   compiler = new Compiler()
   treeLoader = new TreeLoader()
+  treeTypes = this.treeLoader.types
   dslText = DslText.trim()
   genText = ''
   isError = false
   showTree = false
   treeData = null
   openAll = false
-
-  treeTypes : any = [
-    {
-      type: 'Tech',
-      icon: 'far fa-hospital',
-      max_children: 10,
-      max_depth: 10,
-    },
-    {
-      type: 'Client',
-      icon: 'far fa-user',
-      max_children: 10,
-      max_depth: 10,
-    },
-  ]
 
   display () {
     this.displayCompile()
