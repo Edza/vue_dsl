@@ -7,7 +7,18 @@
   <div class="right">
     <h3>GENERATED JAVASCRIPT <span class="small-toggle" @click="toggleVisual">Toggle visual</span></h3>
     <textarea v-if="!showTree" readonly v-model="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
-    <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
+    <div v-else>
+      Prasības:
+      <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
+      <div>
+        Komandā:
+       <ul id="example-1">
+        <li v-for="(member) in members" :key="member">
+          {{ member }}
+        </li>
+      </ul>
+     </div>
+    </div>
   </div>
 </div>
 </template>
@@ -38,6 +49,7 @@ export default class Generator extends Vue {
   showTree = false
   treeData = null
   openAll = false
+  members : string[] = []
 
   display () {
     this.displayCompile()
@@ -58,6 +70,7 @@ export default class Generator extends Vue {
   displayVisual () {
     if (this.showTree) {
       const model = this.compiler.translate(this.dslText).model
+      this.members = model.members
       this.treeData = this.treeLoader.process(model)
     } else {
       this.treeData = null
