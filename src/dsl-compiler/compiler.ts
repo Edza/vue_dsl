@@ -1,5 +1,6 @@
-import {PraModItem, PraMod} from './common'
+import { PraModItem, PraMod } from './common'
 import { ModelBuilder } from './model-builder'
+import { ModelValidator } from './model-validator'
 
 export interface CompilerResult {
   text: string;
@@ -9,6 +10,7 @@ export interface CompilerResult {
 
 class Compiler {
     readonly builder = new ModelBuilder()
+    readonly validator = new ModelValidator()
 
     translate (dslText: string): CompilerResult {
       let builderResult
@@ -16,6 +18,7 @@ class Compiler {
 
       try {
         builderResult = this.builder.BuildPraMod(dslText)
+        this.validator.ValidatePraMod(builderResult)
       } catch (ex) {
         isError = true
         builderResult = ex
@@ -26,8 +29,6 @@ class Compiler {
         isErrorMsg: isError,
         model: builderResult
       }
-
-      // TODO: call model validator
 
       return result
     }
