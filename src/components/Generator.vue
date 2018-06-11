@@ -2,17 +2,17 @@
 <div>
   <div class="left">
     <h3>DSL</h3>
-    <textarea v-model="dslText" @keyup="display"></textarea>
+    <textarea id="dsl-area" v-model="dslText" @keyup="display"></textarea>
   </div>
   <div class="right">
     <h3>GENERATED JAVASCRIPT <span class="small-toggle" @click="toggleVisual">Toggle visual</span></h3>
-    <textarea v-if="!showTree" readonly v-model="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
+    <textarea id="js-area" v-if="!showTree" readonly v-model.lazy="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
     <div v-else>
       Prasības:
       <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
       <div>
         Komandā:
-       <ul id="example-1">
+       <ul>
         <li v-for="(member) in members" :key="member">
           {{ member }}
         </li>
@@ -94,5 +94,36 @@ export default class Generator extends Vue {
 .small-toggle {
   color: lightblue;
   text-decoration: underline;
+}
+h1 {
+  display: inline-block;
+}
+h2 {
+  display: inline;
+}
+.left {
+  float: left;
+  width: 58%;
+}
+.right {
+  float: right;
+  width: 42%;
+}
+#dsl-area {
+  display: inline-block;
+  width: 800px;
+  height: 800px;
+}
+
+#js-area {
+  display: inline-block;
+  width: 590px;
+  height: 800px;
+}
+.parser-error {
+  border-color: #FF0000;
+}
+.read-only {
+  background-color: #eaeaea;
 }
 </style>

@@ -25,29 +25,4 @@ export default class App extends Vue {}
   color: #2c3e50;
   margin-top: 10px;
 }
-h1 {
-  display: inline-block;
-}
-h2 {
-  display: inline;
-}
-.left {
-  float: left;
-  width: 50%;
-}
-.right {
-  float: right;
-  width: 50%;
-}
-textarea {
-  display: inline-block;
-  width: 700px;
-  height: 800px;
-}
-.parser-error {
-  border-color: #FF0000;
-}
-.read-only {
-  background-color: #eaeaea;
-}
 </style>
