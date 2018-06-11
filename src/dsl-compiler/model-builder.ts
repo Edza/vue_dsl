@@ -7,8 +7,8 @@ export class ModelBuilder {
     // item id: number, item about: string
     readonly newItemPattern = /.*Jauna prasība[^']*'([^']*)'[^']*'([^']*)'/
 
-    // is conflicting: string, is technical: string, progress: number
-    readonly itemParamsPattern = /.*Parametri prasībai[^']*'([^']*)'[^']*'([^']*)'[^']*'([^']*)'/
+    // item id: number, is conflicting: string, is technical: string, progress: number
+    readonly itemParamsPattern = /.*Parametri prasībai[^']*'([^']*)'[^']*'([^']*)'[^']*'([^']*)'[^']*'([^']*)'/
 
     // item id: number,  responsible: string, assigned: string[]
     readonly itemTeamPattern = /.*Komandā prasībai[^']*'([^']*)'[^']*'([^']*)'[^']*'([^']*)'/
@@ -128,13 +128,13 @@ export class ModelBuilder {
 
     private SetParentItemRecursive (node: PraModItem, targetId: number, newChild: PraModItem) : boolean {
       if (node.id === targetId) {
-        node.items.push(newChild)
+        node.children.push(newChild)
         return true
       }
 
       let result = false
 
-      for (const item of node.items) {
+      for (const item of node.children) {
         // if any child succeeds we all succeed
         result = result || this.SetParentItemRecursive(item, targetId, newChild)
 

@@ -4,6 +4,7 @@ import { ModelBuilder } from './model-builder'
 export interface CompilerResult {
   text: string;
   isErrorMsg: boolean;
+  model: PraMod
 }
 
 class Compiler {
@@ -23,6 +24,7 @@ class Compiler {
       const result: CompilerResult = {
         text: isError ? builderResult : JSON.stringify(builderResult, null, 2),
         isErrorMsg: isError,
+        model: builderResult
       }
 
       // TODO: call model validator
@@ -37,6 +39,7 @@ class Compiler {
       const result: CompilerResult = {
         text: 'Hello2, ',
         isErrorMsg: genText.indexOf('!') !== -1,
+        model: this.builder.BuildPraMod('')
       }
 
       // if (result.isErrorMsg) {
