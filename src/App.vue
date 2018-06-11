@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h2>PraMod GENERATOR</h2>
+    <h2>PraMod</h2>
     <Generator/>
   </div>
 </template>

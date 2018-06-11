@@ -36,9 +36,9 @@ export class PraModItem {
     private assignTextParameters () {
       this.text = `${this.id}: ${this.about} | ${Math.round(this.progress * 100)}%`
 
-      this.description = `${this.id}: ${this.about} | ${Math.round(this.progress * 100)}%\r\n`
-      this.description += `TEHNISKĀ: ${this.isTechnical ? 'JĀ' : 'NĒ'}, KONFLIKTĒJOŠA: ${this.isConflicting ? 'JĀ' : 'NĒ'}\r\n`
-      this.description += `ATBILDĪGS: ${this.responsible}, KOMANDA: ${this.assigned.join(', ')}`
+      this.description = `${this.id}: ${this.about} | ${Math.round(this.progress * 100)}%<br/>`
+      this.description += `TEHNISKĀ: ${this.isTechnical ? 'JĀ' : 'NĒ'},<br/> KONFLIKTĒJOŠA: ${this.isConflicting ? 'JĀ' : 'NĒ'}<br/>`
+      this.description += `ATBILDĪGS: ${this.responsible},<br/> KOMANDA: ${this.assigned.join(', ')}`
     }
 
     constructor (id: number, about: string) {

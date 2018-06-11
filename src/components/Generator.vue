@@ -5,11 +5,9 @@
     <textarea id="dsl-area" v-model="dslText" @keyup="display"></textarea>
   </div>
   <div class="right">
-    <h3>GENERATED JAVASCRIPT <span class="small-toggle" @click="toggleVisual">Toggle visual</span></h3>
+    <h3>ĢENERĒTAIS JAVASCRIPT <span class="small-toggle" @click="toggleVisual">Apskatīt kodu</span></h3>
     <textarea id="js-area" v-if="!showTree" readonly v-model.lazy="genText" :class="[{ 'parser-error': isError }, 'read-only']"></textarea>
     <div v-else>
-      Prasības:
-      <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
       <div>
         Komandā:
        <ul>
@@ -18,6 +16,12 @@
         </li>
       </ul>
      </div>
+      Prasības:
+      <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="[]"></v-treeview>
+      <div v-if="infoBox">
+        Izvēlētais:<br/><br/>
+        <span v-html="infoBox"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -33,6 +37,7 @@ import VTreeview from 'v-treeview'
 import DslText from '@/assets/dsl-text-initial'
 import { Compiler, CompilerResult } from '@/dsl-compiler/compiler'
 import TreeLoader from './helpers/tree-loader'
+import { PraModItem } from '@/dsl-compiler/common'
 
 @Component({
   components: {
@@ -50,6 +55,7 @@ export default class Generator extends Vue {
   treeData = null
   openAll = false
   members : string[] = []
+  infoBox = ''
 
   display () {
     this.displayCompile()
@@ -60,6 +66,11 @@ export default class Generator extends Vue {
     const result : CompilerResult = this.compiler.translate(this.dslText)
     this.genText = result.text
     this.isError = result.isErrorMsg
+    this.infoBox = ''
+
+    if (this.isError) {
+      this.showTree = false
+    }
   }
 
   toggleVisual () {
@@ -82,8 +93,9 @@ export default class Generator extends Vue {
     this.toggleVisual()
   }
 
-  selected (model: any) {
-    console.log(model)
+  selected (item: any) {
+    const praModItem = item.model as PraModItem
+    this.infoBox = praModItem.description
   }
 }
 
