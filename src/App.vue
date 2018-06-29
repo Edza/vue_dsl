@@ -4,7 +4,7 @@
     <p>
       <b>Realizētā funckionalitāte:</b>
         Ar DSL var aprakstīt visu PraMod funkcionalitāti izņemot norādīt savstarpēji konfliktējošas prasības. Tiek uzģenerēts universāls JSONs, kurš strādā kā Javascript kods.
-        Likumi ir ļoti brīvi un tiem ir jāsatur tikai atslēgvārdi kā "Jauna prasībā" vai "Komandā prasībāi", ārpus šiem atslēgvārdiem var ievadīt brīvu tekstu. Strādā
+        Likumi ir ļoti brīvi un tiem ir jāsatur tikai atslēgvārdi kā "Jauna prasība" vai "Komandā prasībai", ārpus šiem atslēgvārdiem var ievadīt brīvu tekstu. Strādā
         hierarhiska vizualizācija, izdarītu procentu aprēķins, un detaļu apskatīšana kādai prasībai.
       <br/><b>Strādājošie likumi:</b>
         Modeļa likumi: nedrīkst būt saknes prasība tehniskā, Prasību likumi: jābūt atbildīgajam, jābūt piesķirti komandas locekļi.
